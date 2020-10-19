@@ -1,0 +1,103 @@
+<!-- see "2020-10-01 Start into the new API.md" -->
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <title>O.G. Shapes Zoom</title>
+
+    <h2>Look, an iPad from 2013!</h2>
+
+    <script>
+
+      // find the element and assign it to a variable
+      var toChange = document.getElementsByClassName("scaledVideo")[0];
+
+      // give it a color
+      toChange.style.color = "deeppink";
+
+      // change the color
+      function changeColor(){
+        if(toChange.style.color == "deeppink"){
+          toChange.style.color = "dodgerblue";
+        } else if(toChange.style.color == "dodgerblue"){
+          toChange.style.color = "deeppink";
+        }
+      }
+
+    </script>
+
+    <style>
+      #fixed-display {
+        width: 1024px;
+        height: 768px;
+
+        overflow: hidden;
+        position: relative;
+      }
+      #scaled-video {
+        width: 1024px; /*zoom value*/
+        height: 768px;
+
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+      }
+      #ruler {
+        width: 1024px;
+        height: 768px;
+
+        position: absolute;
+        z-index: 1;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="ruler">
+    <img src="VideoRuler.png">
+    </div>
+
+    <div id="fixed-display">
+
+      <div id="scaled-video"></div>
+
+    </div>
+
+    <script>
+      // Load the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/player_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // Replace the 'scaled-video' element with an <iframe> and
+      // YouTube player after the API code downloads.
+      var player;
+      function onYouTubePlayerAPIReady() {
+        player = new YT.Player('scaled-video', {
+          // height: '1024',
+          // width: '768',
+          videoId: 'oqtunQ4yd30'
+        });
+      }
+
+      // Starts the video, because autoplay doesn't seem to work
+      function play(){
+        player.playVideo()
+      }
+    </script>
+
+    <!-- TODO: Field to store the zoom value in a var -->
+
+    <!-- Button to play the video -->
+    <button onclick="play()">Play</button>
+
+  </body>
+
+</html>
