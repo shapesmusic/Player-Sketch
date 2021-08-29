@@ -22,7 +22,7 @@
       const SEND_DATA = false;
 
       // Fetch the vids from the database
-      const VIDEOS_ENDPOINT = 'https://api-mcwvl.ondigitalocean.app/song';
+      const VIDEOS_ENDPOINT = 'https://api-9q2sw.ondigitalocean.app/song';
       let promise = fetch(VIDEOS_ENDPOINT)
               .then(response => response.json())
               .then(data => {
@@ -148,7 +148,7 @@
       		currentVideo = 0;
       	}
 
-        console.log(`loading video ${currentVideo}`);
+        console.log(`loading video ${vids[currentVideo].video_id}`);
         loadVideo(currentVideo);
       }
 
