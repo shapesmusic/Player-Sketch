@@ -16,25 +16,35 @@
       var player;
       var vids;
       var currentVideo = -1;
-      var session = {}
-        session.events = [];
+      var session = {};
+      session.events = [];
+
+      const SEND_DATA = false;
 
       // Fetch the vids from the database
-      fetch('/songs_api')
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        // console.log(data);
-        vids = shuffle(data);
-      });
+      const VIDEOS_ENDPOINT = 'https://api-mcwvl.ondigitalocean.app/song';
+      let promise = fetch(VIDEOS_ENDPOINT)
+              .then(response => response.json())
+              .then(data => {
+                console.log(`returned ${data.length} records from ${VIDEOS_ENDPOINT}; shuffling them`);
+                vids = shuffle(data);
+              });
+
+      function playFirstVideo() {
+        console.log('player loaded, but will wait for the list of videos to load before playing the first one');
+        Promise.all([promise]).then(() => {
+                  console.log('list of videos has loaded, will play the first one');
+                  playNext();
+                }
+        );
+      }
 
       // Define player configurations
-      var playerConfig = {
+      let playerConfig = {
         playerVars: {
         },
         events: {
-          'onReady': playNext,
+          'onReady': playFirstVideo,
           'onStateChange': onPlayerStateChange
         }
       };
@@ -86,7 +96,7 @@
 
         loadDate = new Date();
         loadStamp = loadDate.getTime();
-        videoId = vids[videoIndex].videoId;
+        videoId = vids[videoIndex].video_id;
 
         // put the db values into vars
         startDur = vids[videoIndex].startDur;
@@ -109,7 +119,9 @@
         });
 
         // write previous session data to the db
-        sendData();
+        if (SEND_DATA) {
+          sendData();
+        }
 
         // new session data
         session.videoId = videoId;
@@ -124,6 +136,11 @@
 
       // Plays next song after state change or "Try Another" button
       function playNext() {
+        if (vids === undefined) {
+          console.log("videos have not loaded yet, not trying to play anything");
+          return;
+        }
+
       	if(currentVideo < vids.length-1) {
       		currentVideo++;
       	}
@@ -136,6 +153,11 @@
 
       // Plays previous song after "Go Back" button
       function playPrevious() {
+        if (vids === undefined) {
+          console.log("videos have not loaded yet, not trying to play anything");
+          return;
+        }
+
       	if(currentVideo > 0) {
       		currentVideo--;
       	}
