@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-duration-format/1.3.0/moment-duration-format.min.js"></script>
 
@@ -17,10 +18,6 @@
     var player;
     var vids;
     var currentVideo = -1;
-    var session = {};
-    session.events = [];
-
-    const SEND_DATA = false;
 
     // Fetch the vids from the database
     const VIDEOS_ENDPOINT = 'https://api-9q2sw.ondigitalocean.app/player';
@@ -59,6 +56,7 @@
       if (event.data === YT.PlayerState.ENDED) {
         // console.log("ENDED");
 
+        // Time buffer to ensure smooth video transitions
         var endDate = new Date();
         var endStamp = endDate.getTime();
 
@@ -94,11 +92,12 @@
     // Loads video, start & end times, timestamp
     function loadVideo(videoIndex) {
 
+      // Used in onPlayerStateChange to ensure smooth video transitions
       loadDate = new Date();
       loadStamp = loadDate.getTime();
-      videoId = vids[videoIndex].video_id;
 
       // put the db values into vars
+      videoId = vids[videoIndex].video_id;
       startDur = vids[videoIndex].start_time;
       endDur = vids[videoIndex].end_time;
       videoDur = vids[videoIndex].videoDur;
@@ -118,20 +117,6 @@
         endSeconds: endSeconds
       });
 
-      // write previous session data to the db
-      if (SEND_DATA) {
-        sendData();
-      }
-
-      // new session data
-      session.videoId = videoId;
-      session.loadStamp = loadStamp;
-      session.events.length = 0;
-
-      // console.log(session);
-      // console.log("current videoId: " + videoId);
-      // console.log("loaded at: " + loadStamp);
-
     }
 
     // Plays next song after state change or "Try Another" button
@@ -147,6 +132,7 @@
         currentVideo = 0;
       }
 
+      // Check start & end times
       console.log(`loading video ${vids[currentVideo].video_id}`);
       console.log(`start time is ${vids[currentVideo].start_time}`);
       console.log(`end time is ${vids[currentVideo].end_time}`);
@@ -170,55 +156,8 @@
       loadVideo(currentVideo);
     }
 
-    document.addEventListener("keydown", function() {
-      // Get JavaScript's timestamp
-      var date = new Date();
-      var clockTimeUNIX = date.getTime();
-
-      // Get the YT player's timestamp (seconds) and convert to millis
-      var playerMs = 1000 * player.getCurrentTime();
-      // Round videoTime to remove the decimal places
-      var videoTimeMs = playerMs.toFixed(0);
-
-      // push these timestamps into session.events
-      session.events.push({
-        "clockTimeUNIX": clockTimeUNIX,
-        "videoTimeMs": videoTimeMs
-      });
-
-      // log it out
-      console.log(session.events.length);
-      // console.log(session.events);
-      console.log(clockTimeUNIX + " ms since the beginning of UNIX time");
-      console.log(videoTimeMs + " ms since the beginning of this video \n \n");
-    });
-
-    function sendData() {
-      var xhr = new XMLHttpRequest();
-
-      // if the post went through, this logs it
-      xhr.addEventListener("readystatechange", function() {
-        if (this.readyState === 4) {
-          console.log("session sent to the db!");
-          console.log(this.responseText);
-
-          // info about the current video after sendData
-          console.log("current videoId is: " + videoId);
-          console.log("should start at: " + startHms);
-          console.log("should end at: " + endHms);
-          console.log("of total duration: " + videoHms);
-        }
-      });
-
-      xhr.open("POST", "/session");
-      xhr.setRequestHeader("Content-Type", "application/json");
-
-      var data = JSON.stringify(session);
-      xhr.send(data);
-      // could also do:
-      // XHR.send(JSON.stringify(session));
-    }
   </script>
+
 </head>
 
 <body>
