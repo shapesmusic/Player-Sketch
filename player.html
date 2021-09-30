@@ -3,8 +3,17 @@
 
 <head>
 
+  <!-- moment -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-duration-format/1.3.0/moment-duration-format.min.js"></script>
+
+  <!-- the stylesheet -->
+  <link rel="stylesheet/less" type="text/css" href="styles.less" />
+  <!-- less.js (a CSS preprocessor) -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.0.0/less.min.js" ></script>
+
+  <!-- jQuery -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
   <script>
     // This code loads the IFrame Player API code asynchronously.
@@ -38,7 +47,13 @@
 
     // Define player configurations
     let playerConfig = {
-      playerVars: {},
+      playerVars: {
+        controls: 0, // hides player controls
+        modestbranding: 0, // hides YouTube logo
+        rel: 0, // doesn't show related videos at end
+        disablekb: 1, // disables keyboard controls
+        iv_load_policy: 3 // video annotations not shown by default
+      },
       events: {
         'onReady': playFirstVideo,
         'onStateChange': onPlayerStateChange
@@ -53,10 +68,11 @@
 
     // The API calls this function when the player's state changes.
     function onPlayerStateChange(event) {
+
+      // Time buffer to ensure smooth video transitions
       if (event.data === YT.PlayerState.ENDED) {
         // console.log("ENDED");
 
-        // Time buffer to ensure smooth video transitions
         var endDate = new Date();
         var endStamp = endDate.getTime();
 
@@ -68,6 +84,17 @@
           playNext();
         }
       }
+
+      // CSS for fullscreen
+      else if (event.data === YT.PlayerState.PLAYING) {
+        $('#player').addClass('active');
+      }
+
+      // CSS for fullscreen
+      else if (event.data === YT.PlayerState.PAUSED) {
+        $('#player').removeClass('active');
+      }
+
     }
 
     // The Fischer-Yates Shuffle
@@ -156,16 +183,45 @@
       loadVideo(currentVideo);
     }
 
+    // Temporary solution for fullscreen videos
+    function vidRescale() {
+
+      var w = $(window).width() + 200,
+        h = $(window).height() + 200;
+
+      if (w / h > 16 / 9) {
+        player.setSize(w, w / 16 * 9);
+        $('.player .screen').css({
+          'left': '0px'
+        });
+      } else {
+        player.setSize(h / 9 * 16, h);
+        $('.player .screen').css({
+          'left': -($('.player .screen').outerWidth() - w) / 2
+        });
+      }
+    }
+
+    $(window).on('load resize', function() {
+      vidRescale();
+    });
+
   </script>
 
 </head>
 
 <body>
 
-  <div id="player"></div>
+  <!-- id="player" wrapped in CSS for fullscreen -->
+  <div class="player">
+    <div class="screen mute" id="player"></div>
+  </div>
 
-  <br><button onclick="playNext()">Try Another</button>
-  <br><button onclick="playPrevious()">Go Back</button>
+  <!-- Covers the player with custom controls -->
+  <div class="cover">
+    <br><button onclick="playNext()">Try Another</button>
+    <br><button onclick="playPrevious()">Go Back</button>
+  </div>
 
 </body>
 

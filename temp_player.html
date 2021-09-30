@@ -36,6 +36,7 @@ FIXME:
 
 			</div>
 		</div>
+
 		<div class="player">
 			<div class="screen mute" id="player"></div>
 		</div>
@@ -82,13 +83,13 @@ FIXME:
 			var player,
 				playerDefaults = {
 					autoplay: 0,
-					autohide: 1,
+					autohide: 1, // deprecated
 					modestbranding: 0,
 					rel: 0,
-					showinfo: 0,
+					showinfo: 0, // deprecated
 					controls: 0,
 					disablekb: 1,
-					enablejsapi: 0,
+					enablejsapi: 0, // redundant, default is 0
 					iv_load_policy: 3
 				};
 			var vid = [
