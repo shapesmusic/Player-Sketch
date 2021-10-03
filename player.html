@@ -43,6 +43,9 @@
         // console.log('list of videos has loaded, will play the first one');
         playNext();
       });
+
+      // Mutes the player so the browser will allow the first video to autoplay
+      player.mute();
     }
 
     // Define player configurations
@@ -94,6 +97,10 @@
       else if (event.data === YT.PlayerState.PAUSED) {
         $('#player').removeClass('active');
       }
+
+      // Sets the title and artist
+      $('.hi em:first-of-type').html(vids[currentVideo].title);
+      $('.hi em:nth-of-type(2)').html(vids[currentVideo].artist_name);
 
     }
 
@@ -219,9 +226,35 @@
 
   <!-- Covers the player with custom controls -->
   <div class="cover">
-    <br><button onclick="playNext()">Try Another</button>
-    <br><button onclick="playPrevious()">Go Back</button>
+
+    <!-- Display field for song info and controls -->
+    <div class="hi">
+
+      <em>A Song...</em><br>
+      by <em>An Artist...</em><br>
+      <span>Click</span> to <em>un</em>mute<br>
+
+      <br><button onclick="playNext()">Try Another</button>
+      <br><button onclick="playPrevious()">Go Back</button>
+
+    </div>
+
   </div>
+
+  <script>
+
+    // Toggle's mute / unmute
+    $('.hi span:last-of-type').on('click', function() {
+      $('#player').toggleClass('mute');
+      $('.hi em:last-of-type').toggleClass('hidden');
+      if ($('#player').hasClass('mute')) {
+        player.mute();
+      } else {
+        player.unMute();
+      }
+    });
+
+  </script>
 
 </body>
 
