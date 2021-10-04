@@ -29,7 +29,7 @@
     var currentVideo = -1;
 
     // Fetch the vids from the database
-    const VIDEOS_ENDPOINT = 'https://api-9q2sw.ondigitalocean.app/player';
+    const VIDEOS_ENDPOINT = 'https://api-9q2sw.ondigitalocean.app/top-shape';
     let promise = fetch(VIDEOS_ENDPOINT)
       .then(response => response.json())
       .then(data => {
@@ -153,7 +153,7 @@
 
       // Set the shape and anchor
       setShape();
-      setAnchor();
+      // setAnchor();
 
     }
 
@@ -250,9 +250,12 @@
       </div>
 
       <br>
+
       <em>A Song...</em><br>
       by <em>An Artist...</em>
+
       <br>
+
       <span>Click</span> to <em>un</em>mute<br>
 
       <br><button onclick="playNext()">Try Another</button>
