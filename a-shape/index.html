@@ -151,6 +151,10 @@
         endSeconds: endSeconds
       });
 
+      // Set the shape and anchor
+      setShape();
+      setAnchor();
+
     }
 
     // Plays next song after state change or "Try Another" button
@@ -213,6 +217,14 @@
       vidRescale();
     });
 
+    // sets the shape and anchor images
+			function setShape(){
+			     document.getElementById('layer3').src = "../images/" + (vids[currentVideo].shape) + "_shape.png";
+			}
+			function setAnchor(){
+			     document.getElementById('layer2').src = "../images/" + (vids[currentVideo].anchor) + "_anchor.png";
+			}
+
   </script>
 
 </head>
@@ -230,8 +242,17 @@
     <!-- Display field for song info and controls -->
     <div class="hi">
 
+      <!-- Shape and anchor display -->
+      <div>
+        <img id="layer1" src="../images/kybd.png" style="position:center; opacity: 0.9"/>
+        <img id="layer2" style="position:absolute; left:0; right:0; margin:auto"/>
+        <img id="layer3" style="position:absolute; left:0; right:0; margin:auto"/>
+      </div>
+
+      <br>
       <em>A Song...</em><br>
-      by <em>An Artist...</em><br>
+      by <em>An Artist...</em>
+      <br>
       <span>Click</span> to <em>un</em>mute<br>
 
       <br><button onclick="playNext()">Try Another</button>
