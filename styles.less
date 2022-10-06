@@ -30,7 +30,7 @@ a {
     font-size: 24px;
     line-height: 26px;
     text-align: center;
-    
+
     // without this, shape and anchor images will be displaced if either song or artist name lines are larger than "Click to unmute"
     min-width: 220px;
 
@@ -48,6 +48,41 @@ a {
       }
     }
   }
+
+  .hinfo {
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    // transform: translate(-50%,-50%);
+
+    background: rgba(0,0,0,0.3);
+    padding: 1rem;
+
+    color: #fff;
+
+    font-family: Avenir, Helvetica, sans-serif;
+    font-size: 24px;
+    line-height: 26px;
+    text-align: center;
+
+    // without this, shape and anchor images will be displaced if either song or artist name lines are larger than "Click to unmute"
+    min-width: 220px;
+
+    span {
+      color: #ff0;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    em {
+      font-style: normal;
+
+      &.hidden {
+        display: none;
+      }
+    }
+  }
+
 }
 
 .player {
