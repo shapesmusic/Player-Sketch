@@ -1,0 +1,65 @@
+{
+  "patches": [
+    {
+      "patchName": "blank canvas",
+      "tags": [],
+      "url": "000"
+    },
+    {
+      "patchName": "thick buzzy",
+      "tags": [
+        "shapes",
+        "potential tags"
+      ],
+      "url": "001"
+    },
+    {
+      "patchName": "synth splat",
+      "tags": [
+        "shapes",
+        "potential tags"
+      ],
+      "url": "002"
+    },
+    {
+      "patchName": "mellow spacey",
+      "tags": [
+        "shapes",
+        "potential tags"
+      ],
+      "url": "003"
+    },
+    {
+      "patchName": "buzzchirp",
+      "tags": [
+        "shapes",
+        "potential tags"
+      ],
+      "url": "004"
+    },
+    {
+      "patchName": "sharp round",
+      "tags": [
+        "shapes",
+        "potential tags"
+      ],
+      "url": "005"
+    },
+    {
+      "patchName": "spacey pluck",
+      "tags": [
+        "shapes",
+        "potential tags"
+      ],
+      "url": "006"
+    },
+    {
+      "patchName": "nerdy chill",
+      "tags": [
+        "shapes",
+        "potential tags"
+      ],
+      "url": "007"
+    }
+  ]
+}
