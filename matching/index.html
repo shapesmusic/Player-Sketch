@@ -126,6 +126,13 @@
     // Loads video, start & end times, timestamp
     function loadVideo(videoIndex) {
 
+      // hide shape for new songs
+      $('#layer3').hide();
+      // Update button text
+      $('#unhideButton').text('Show Shape');
+      // Update button state
+      layer3Visible = false;
+
       // Used in onPlayerStateChange to ensure smooth video transitions
       loadDate = new Date();
       loadStamp = loadDate.getTime();
@@ -159,6 +166,7 @@
 
     // Plays next song after state change or "Try Another" button
     function playNext() {
+
       if (vids === undefined) {
         console.log("videos have not loaded yet, not trying to play anything");
         return;
@@ -176,6 +184,7 @@
       console.log(`end time is ${vids[currentVideo].end_time}`);
 
       loadVideo(currentVideo);
+
     }
 
     // Plays previous song after "Go Back" button
@@ -225,6 +234,25 @@
 			     document.getElementById('layer2').src = "../images/" + (vids[currentVideo].anchor) + "_anchor.png";
 			}
 
+    // the show/hide shape button
+      $(document).ready(function() {
+        // Add click event for the show/hide shape button
+        $('#unhideButton').on('click', function() {
+          // Toggle layer3 visibility and update button text
+          if (layer3Visible) {
+            $('#layer3').hide();
+            $(this).text('Show Shape');
+          } else {
+            $('#layer3').show();
+            $(this).text('Hide Shape');
+          }
+
+          // Update button state
+          layer3Visible = !layer3Visible;
+        });
+      });
+
+
   </script>
 
 </head>
@@ -246,10 +274,14 @@
       <div>
         <img id="layer1" src="../images/kybd.png" style="position:center; opacity: 0.9"/>
         <img id="layer2" style="position:absolute; left:0; right:0; margin:auto"/>
-        <img id="layer3" style="position:absolute; left:0; right:0; margin:auto"/>
+        <!-- <img id="layer3" style="position:absolute; left:0; right:0; margin:auto"/> -->
+        <img id="layer3" class="hidden-image" src="" style="display: none; position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);" />
+
       </div>
 
-      <br>
+      <button id="unhideButton">Show Shape</button>
+
+      <br><br>
 
       <em>A Song...</em><br>
       by <em>An Artist...</em>
